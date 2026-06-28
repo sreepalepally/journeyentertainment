@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ConsistencyCheckOutput",
+  "description": "Output of Step 4.8 Consistency Check. Agent judges against system-computed diffs; never computes raw diffs itself. Candidate fix only after user picks target+direction.",
+  "type": "object",
+  "required": ["status", "issues"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["issue_summary", "issue_location", "impact_scope", "severity", "recommended_status"],
+        "properties": {
+          "issue_summary": { "type": "string" },
+          "issue_location": {
+            "type": "object",
+            "required": ["object_type", "object_id"],
+            "properties": {
+              "object_type": { "type": "string" },
+              "object_id": { "type": "string" }
+            }
+          },
+          "impact_scope": { "type": "string", "enum": ["local", "upstream", "downstream", "cross_module"] },
+          "severity": { "type": "string", "enum": ["info", "warning", "major"] },
+          "suggested_target": { "type": "string" },
+          "suggested_direction": { "type": "string" },
+          "candidate_fix": { "type": ["string", "null"], "description": "Only non-null after the user has picked target+direction." },
+          "recommended_status": { "type": "string", "enum": ["pass", "warning", "fail", "suspended"] }
+        }
+      }
+    }
+  }
+}

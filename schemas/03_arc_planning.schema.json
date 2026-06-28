@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArcPlanningOutput",
+  "description": "Output of Step 4.3 Arc Planning. Triggers only after the outline is locked. Must not change total episode count.",
+  "type": "object",
+  "required": ["status", "arcs", "episodes"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "arcs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["arc_id", "arc_name", "arc_summary", "narrative_purpose", "episode_range"],
+        "properties": {
+          "arc_id": { "type": "string" },
+          "arc_name": { "type": "string" },
+          "arc_summary": { "type": "string" },
+          "narrative_purpose": { "type": "string" },
+          "episode_range": {
+            "type": "object",
+            "required": ["start", "end"],
+            "properties": {
+              "start": { "type": "integer", "minimum": 1 },
+              "end": { "type": "integer", "minimum": 1 }
+            }
+          }
+        }
+      }
+    },
+    "episodes": {
+      "type": "array",
+      "description": "Must total exactly the outline's locked episode_count; ranges contiguous, non-overlapping, cover every episode exactly once.",
+      "items": {
+        "type": "object",
+        "required": ["episode_number", "episode_title", "episode_one_line_summary", "episode_hook", "episode_turning_point"],
+        "properties": {
+          "episode_number": { "type": "integer", "minimum": 1 },
+          "arc_id": { "type": "string" },
+          "episode_title": { "type": "string" },
+          "episode_one_line_summary": { "type": "string" },
+          "episode_purpose_in_arc": { "type": "string" },
+          "episode_hook": { "type": "string" },
+          "episode_turning_point": { "type": "string" },
+          "episode_ending_direction": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+# Secrets / local environment
+.env
+
+# Local agent state
+project_state.pkl
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

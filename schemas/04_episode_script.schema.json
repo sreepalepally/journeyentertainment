@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EpisodeScriptOutput",
+  "description": "Output of Step 4.4/4.5 Overview batch generation and Episode Detail (same capability, different entry point). episode_script is canonical; derived fields never overwrite it.",
+  "type": "object",
+  "required": ["status", "episode_id", "episode_script"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "episode_id": { "type": "string" },
+    "episode_script": { "type": "string", "description": "The canonical full script text. Only present when generating, not when only extracting." },
+    "ai_revision_candidate": { "type": "string", "description": "Only present when revising; a candidate, never auto-applied." },
+    "generation_notes": { "type": "string" },
+    "derived": {
+      "type": "object",
+      "description": "Extracted from episode_script. Never overwrites episode_script.",
+      "properties": {
+        "scene_list": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["scene_number", "scene_location", "time_of_day", "characters_in_scene"],
+            "properties": {
+              "scene_number": { "type": "integer" },
+              "scene_location": { "type": "string" },
+              "time_of_day": { "type": "string" },
+              "characters_in_scene": { "type": "array", "items": { "type": "string" } },
+              "dialogue_blocks": { "type": "array", "items": { "type": "string" } },
+              "action_blocks": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "key_plot_points": { "type": "array", "items": { "type": "string" } },
+        "episode_ending": { "type": "string" },
+        "referenced_asset_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["type", "name"],
+            "properties": {
+              "type": { "type": "string", "enum": ["character", "scene", "prop"] },
+              "name": { "type": "string" }
+            }
+          }
+        },
+        "continuity_notes": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

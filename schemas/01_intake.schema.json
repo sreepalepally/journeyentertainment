@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IntakeQuestionnaireOutput",
+  "description": "Output of Step 4.1 Intake & Questionnaire (agent-owned: classification, inference, conflict detection, questionnaire generation only). System owns presence checks on structured fields.",
+  "type": "object",
+  "required": ["status", "input_sufficiency_status", "input_type", "inferred_fields", "ambiguous_fields", "conflict_flags", "questionnaire_items", "ai_decided_fields"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "input_sufficiency_status": { "type": "string", "enum": ["sufficient", "missing_info", "conflicting"] },
+    "input_type": { "type": "string", "enum": ["idea", "reference", "full_script", "partial_script", "mixed"] },
+    "inferred_fields": {
+      "type": "object",
+      "description": "Fields inferred from free text when system metadata presence checks fall short. Key = field name, value = inferred value.",
+      "additionalProperties": true
+    },
+    "ambiguous_fields": { "type": "array", "items": { "type": "string" } },
+    "conflict_flags": { "type": "array", "items": { "type": "string" } },
+    "questionnaire_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["field", "question"],
+        "properties": {
+          "field": { "type": "string" },
+          "question": { "type": "string" },
+          "options": { "type": "array", "items": { "type": "string" } },
+          "recommended_default": { "type": "string" }
+        }
+      }
+    },
+    "ai_decided_fields": {
+      "type": "array",
+      "description": "Fields the user skipped or explicitly left to 'let AI decide'.",
+      "items": { "type": "string" }
+    }
+  },
+  "x_required_fields_checked_by_system": [
+    "genre", "target_audience", "target_market", "visual_style",
+    "total_episode_count", "approx_episode_duration", "core_hook"
+  ]
+}

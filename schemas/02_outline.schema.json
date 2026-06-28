@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ScriptOutlineOutput",
+  "description": "Output of Step 4.2 Script Outline (agent-owned generation). System tracks outline_version_id and lock status.",
+  "type": "object",
+  "required": ["status", "series_title", "genre", "visual_style", "target_market", "target_audience", "length", "synopsis", "core_conflict", "core_hooks", "main_characters", "character_settings", "character_relationships", "visual_image"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "series_title": { "type": "string" },
+    "genre": { "type": "string" },
+    "visual_style": { "type": "string" },
+    "target_market": { "type": "string" },
+    "target_audience": { "type": "string" },
+    "length": {
+      "type": "object",
+      "required": ["episode_count", "approx_duration", "total_duration"],
+      "properties": {
+        "episode_count": { "type": "integer", "minimum": 1 },
+        "approx_duration": { "type": "string", "description": "e.g. '~2 minutes per episode'" },
+        "total_duration": { "type": "string" }
+      }
+    },
+    "synopsis": { "type": "string" },
+    "core_conflict": { "type": "string" },
+    "core_hooks": { "type": "array", "items": { "type": "string" } },
+    "main_characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["character_id", "character_name", "role_in_story"],
+        "properties": {
+          "character_id": { "type": "string" },
+          "character_name": { "type": "string" },
+          "role_in_story": { "type": "string" }
+        }
+      }
+    },
+    "character_settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["character_id", "personality", "motivation", "goal", "internal_conflict", "external_conflict", "visual_image"],
+        "properties": {
+          "character_id": { "type": "string" },
+          "character_archetype": { "type": "string" },
+          "personality": { "type": "string" },
+          "motivation": { "type": "string" },
+          "goal": { "type": "string" },
+          "internal_conflict": { "type": "string" },
+          "external_conflict": { "type": "string" },
+          "story_function": { "type": "string" },
+          "visual_image": { "type": "string", "description": "Age, appearance, clothing, demeanor - becomes the seed for the character asset's initial image prompt." }
+        }
+      }
+    },
+    "character_relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["relationship_pair", "relationship_type"],
+        "properties": {
+          "relationship_pair": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2, "description": "Two character_ids; both must exist in main_characters." },
+          "relationship_type": { "type": "string" },
+          "relationship_conflict": { "type": "string" },
+          "relationship_arc": { "type": "string" }
+        }
+      }
+    },
+    "visual_image": { "type": "string", "description": "Overall series-level visual identity / look." },
+    "ai_decided_fields_filled": {
+      "type": "array",
+      "description": "Fields that were 'let AI decide' from intake, now filled with a concrete choice for user review.",
+      "items": { "type": "string" }
+    }
+  }
+}

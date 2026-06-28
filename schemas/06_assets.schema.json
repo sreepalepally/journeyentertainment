@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AssetPromptOutput",
+  "description": "Output of Step 4.7 Assets. Agent owns asset_prompt and image_generation_prompt only - never the render call or generated_image_url.",
+  "type": "object",
+  "required": ["status", "asset_id", "asset_type", "asset_prompt", "image_generation_prompt", "visual_assumptions"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "asset_id": { "type": "string" },
+    "asset_type": { "type": "string", "enum": ["character", "scene", "prop"] },
+    "base_asset_name": { "type": "string" },
+    "asset_source": { "type": "string", "enum": ["outline", "script_extraction", "manual_creation", "import"] },
+    "asset_prompt": { "type": "string" },
+    "image_generation_prompt": { "type": "string", "description": "The finalized prompt; rendering itself is a system handoff." },
+    "visual_assumptions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Any visual facts the agent assumed must be listed here, never silently invented."
+    }
+  }
+}

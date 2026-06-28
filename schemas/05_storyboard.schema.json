@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "StoryboardOutput",
+  "description": "Output of Step 4.6 Storyboard. Splits latest episode_script into shots. Agent consumes system-provided asset reference IDs; does not compute binding itself.",
+  "type": "object",
+  "required": ["status", "episode_id", "shots"],
+  "properties": {
+    "status": { "type": "string", "enum": ["ok", "failed"] },
+    "error_reason": { "type": "string" },
+    "episode_id": { "type": "string" },
+    "source_episode_script_version_id": { "type": "string" },
+    "shots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["shot_id", "shot_number", "duration", "shot_size", "framing", "visual_description", "action", "video_prompt", "referenced_asset_version_or_variant_ids"],
+        "properties": {
+          "shot_id": { "type": "string" },
+          "shot_number": { "type": "integer" },
+          "duration": { "type": "number", "description": "seconds" },
+          "shot_size": { "type": "string", "enum": ["wide", "medium", "close_up", "insert", "extreme_close_up", "two_shot"] },
+          "framing": { "type": "string" },
+          "composition": { "type": "string" },
+          "visual_description": { "type": "string" },
+          "action": { "type": "string" },
+          "dialogue_voiceover": { "type": "string" },
+          "mood_atmosphere": { "type": "string" },
+          "video_prompt": { "type": "string" },
+          "referenced_asset_version_or_variant_ids": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "System-provided concrete IDs only; may be empty until the user selects an asset version."
+          }
+        }
+      }
+    }
+  }
+}
